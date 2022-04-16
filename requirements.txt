@@ -1,0 +1,10 @@
+1 - Login
+1.1 - Crear Login para C19 con formato moderno.
+1.2 - Elegir los 3 colores que van a ser fundamental para la aplicación.
+1.3 - Buscar formato moderno de login y utilizar tailwindCSS.
+
+2 - Crear SideBar y NavBar para el layout de la vista.
+
+3 - Crear page de casos.
+
+4 - Crear page de laboratorio.
