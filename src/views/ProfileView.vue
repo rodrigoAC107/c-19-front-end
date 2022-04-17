@@ -3,7 +3,7 @@
         <h1>Profile</h1>
 
         <div class="flex flex-row my-2 justify-center content-center">
-            <form @submit.prevent="editUser" class="text-center w-1/2 p-4 space-y-4 bg-white rounded-xl" autocomplete="off">
+            <form @submit.prevent="putUser" class="text-center w-1/2 p-4 space-y-4 bg-white rounded-xl" autocomplete="off">
                 <div>
                     <input v-model="user.name" type="text" autocomplete="off" placeholder="Name" class="border border-gray-300 rounded-md px-2 outline-gray-300 w-1/2">
                 </div>
@@ -33,11 +33,8 @@ export default {
         LayoutVertical
     },
     setup() {
-        const { getUser } = useAuth();
+        const { getUser, editUser, setLocalStorage } = useAuth();
         const user = ref([]);
-
-        const editUser = () => console.log("Edit User");
-
 
         const fetchUser = async () => {
             const { data } = await getUser();
@@ -48,7 +45,17 @@ export default {
         return {
             user,
             // Methods
-            editUser
+            putUser: async () => {
+                let editData = {
+                    'uid':      user.value.uid,
+                    'name':     user.value.name,
+                    'email':    user.value.email,
+                    'password': user.value.password
+                };
+                const { data } = await editUser(editData);
+                user.value.password = '';
+                setLocalStorage('user', data);
+            }
         }
         
     },

@@ -18,7 +18,7 @@
         to="/profile"
         class="p-2 flex flex-row space-x-4 cursor-pointer hover:bg-gray-50 hover:rounded-lg"
       >
-        <p>Anna Wilson</p>
+        <p>{{ name }}</p>
       </router-link>
       <div
         @click="logOut"
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import {
   BellIcon,
   UserCircleIcon,
@@ -46,14 +47,18 @@ export default {
   components: { BellIcon, UserCircleIcon, LogoutIcon, MenuIcon },
   setup() {
     const store = useStore();
-    const { clearLocalStorage } = useAuth();
+    const { clearLocalStorage, getLocalStorage } = useAuth();
     const router = useRouter();
+    const name = ref('');
+
+    name.value = getLocalStorage('user').name;
 
     const sidebarToggle = computed(
       () => store.getters["sidebar/getSidebarToggle"]
     );
 
     return {
+      name,
       // methods
       changeSidebar: () =>
         store.dispatch("sidebar/toggleSidebar", !sidebarToggle.value),

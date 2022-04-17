@@ -1,4 +1,4 @@
-import { login, meUser } from "../services/user";
+import { login, meUser, putUser } from "../services/user";
 
 const useAuth = () => {
   const loginUser = async (email, password) => {
@@ -11,12 +11,17 @@ const useAuth = () => {
     return resp;
   } 
 
+  const editUser = async (data) => {
+    const resp = await putUser(data);
+    return resp;
+  }
+
   const setLocalStorage = (key, value) => {
       localStorage.setItem(key, JSON.stringify(value));
   };
   
   const getLocalStorage = (key) => {
-    localStorage.getItem(key);
+    return JSON.parse(localStorage.getItem(key));
   };
 
   const clearLocalStorage = () => {
@@ -26,6 +31,7 @@ const useAuth = () => {
   return {
     loginUser,
     getUser,
+    editUser,
     setLocalStorage,
     getLocalStorage,
     clearLocalStorage
