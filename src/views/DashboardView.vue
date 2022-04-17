@@ -82,7 +82,9 @@ export default {
   components: {
     LayoutVertical,
   },
-  setup() {},
+  setup() {
+    
+  },
 };
 </script>
 

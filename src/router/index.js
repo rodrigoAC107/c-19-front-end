@@ -8,7 +8,8 @@ const router = createRouter({
       name: "login",
       component: () => import("../views/LoginView.vue"),
       meta: {
-        layout: 'full',
+        layout: "full",
+        requiresAuth: false,
       },
     },
     {
@@ -16,7 +17,8 @@ const router = createRouter({
       name: "forgot-password",
       component: () => import("../views/ForgotPassword.vue"),
       meta: {
-        layout: 'full',
+        layout: "full",
+        requiresAuth: false,
       },
     },
     {
@@ -24,7 +26,8 @@ const router = createRouter({
       name: "profile",
       component: () => import("../views/ProfileView.vue"),
       meta: {
-        layout: 'vertical',
+        layout: "vertical",
+        requiresAuth: true,
       },
     },
     {
@@ -32,7 +35,8 @@ const router = createRouter({
       name: "dashboard",
       component: () => import("../views/DashboardView.vue"),
       meta: {
-        layout: 'vertical',
+        layout: "vertical",
+        requiresAuth: true,
       },
     },
     {
@@ -40,7 +44,8 @@ const router = createRouter({
       name: "cases",
       component: () => import("../views/CasesView.vue"),
       meta: {
-        layout: 'vertical',
+        layout: "vertical",
+        requiresAuth: true,
       },
     },
     {
@@ -48,10 +53,27 @@ const router = createRouter({
       name: "laboratory",
       component: () => import("../views/LaboratoryView.vue"),
       meta: {
-        layout: 'vertical',
+        layout: "vertical",
+        requiresAuth: true,
       },
     },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: to => { return 'login' }
+    }
   ],
+});
+
+router.beforeEach((to, from) => {
+
+  const token = localStorage.getItem('x-token');
+
+  if (to.meta.requiresAuth && !token) {
+    return {
+      path: "/login",
+    };
+  }
+
 });
 
 export default router;
