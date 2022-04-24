@@ -16,7 +16,7 @@
           <p class="font-semibold text-blue-800">
             Por favor ingresa tus credenciales para iniciar sesión.
           </p>
-          <form @submit.prevent="onSubmit">
+          <form class="space-y-5" @submit.prevent="onSubmit">
             <div>
               <input
                 type="email"

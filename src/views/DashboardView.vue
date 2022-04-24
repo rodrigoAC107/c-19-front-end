@@ -47,7 +47,7 @@
         </div>
       </div>
       <div
-        class="bg-white border-1 border-solid h-44 w-1/4 rounded-lg shadow-xl shadow-gray-400 hover:bg-gradient-to-r from-cyan-400 to-blue-400 cursor-pointer"
+        class="bg-white pr-4 border-1 border-solid h-44 w-1/4 rounded-lg shadow-xl shadow-gray-400 hover:bg-gradient-to-r from-cyan-400 to-blue-400 cursor-pointer"
       >
         <div class="flex flex-col h-full w-full bg-hover-white">
           <div class="flex flex-row h-1/2 py-4">

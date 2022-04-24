@@ -2,7 +2,7 @@
 <template>
   <button @click="toggleOpen">
     <FilterIcon
-      class="bg-sky-700 text-white h-10 w-10 p-2 rounded-lg hover:bg-sky-300 hover:cursor-pointer"
+      class="bg-sky-700 text-white h-8 w-8 p-2 rounded-lg hover:bg-sky-300 hover:cursor-pointer"
     />
   </button>
   <TransitionRoot as="template" :show="open">

@@ -3,15 +3,13 @@
     <h1>Cases</h1>
     <div class="flex w-full min-h-full justify-center content-center mb-3">
       <div class="flex w-11/12 justify-end w-full space-x-2">
-        <input
-          class="outline-0 rounded-lg p-1 focus:cursor-pointer"
-          type="search"
-        />
-        <button
-          class="bg-sky-700 text-white p-1 rounded-lg hover:bg-sky-300 hover:cursor-pointer"
-        >
-          Search
-        </button>
+        <div class="relative">
+          <input
+            class="outline-0 rounded-lg p-1 px-2"
+            type="text"
+          />
+          <SearchIcon class="h-5 w-5 absolute top-2 right-2 hover:cursor-pointer"/>
+        </div>
         <!-- Modal Start -->
         <Modal>
           <template v-slot:form>
@@ -142,11 +140,13 @@
 </template>
 
 <script>
+import { SearchIcon } from '@heroicons/vue/outline'
 import Modal from "../components/Modal.vue";
 import LayoutVertical from "../layout/LayoutVertical.vue";
 export default {
   components: {
     Modal,
+    SearchIcon,
     LayoutVertical,
   },
   setup() {},
