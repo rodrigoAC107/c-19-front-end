@@ -1,4 +1,4 @@
-import { login, meUser, putUser } from "../services/user";
+import { login, meUser, putUser } from "../services/UserServices";
 
 const useAuth = () => {
   const loginUser = async (email, password) => {

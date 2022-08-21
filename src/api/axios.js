@@ -5,7 +5,7 @@ const token = localStorage.getItem('x-token');
 
 const api = axios.create({
   baseUrl: BASE_URL,
-  headers: {'x-token': token.replace(/['"]+/g, '')}
+  headers: token ? {'x-token': token.replace(/['"]+/g, '')} : null
 }); 
 
 
