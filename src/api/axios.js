@@ -1,12 +1,19 @@
 import axios from 'axios';
 
 const BASE_URL = import.meta.VITE_URL_BASE;
-const token = localStorage.getItem('x-token');
 
-const api = axios.create({
+const axiosInstance = axios.create({
   baseUrl: BASE_URL,
-  headers: token ? {'x-token': token.replace(/['"]+/g, '')} : null
 }); 
 
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = JSON.parse(localStorage.getItem('x-token'));
+    const auth = token ? token.replace(/['"]+/g, '') : null
+    config.headers.common['x-token'] = auth;
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
 
-export default api;
+export default axiosInstance;

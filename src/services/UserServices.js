@@ -1,10 +1,6 @@
-import api from "../api/axios";
+import axiosInstance from "../api/axios";
 
 const API_BASE_URL = import.meta.env.VITE_URL_BASE;
-
-export const meUser = () => {
-  return api.get(API_BASE_URL + "/users/me");
-};
 
 export const login = (email, password) => {
   const data = {
@@ -12,9 +8,13 @@ export const login = (email, password) => {
     password,
   };
 
-  return api.post(API_BASE_URL + "/auth/login", data);
+  return axiosInstance.post(API_BASE_URL + "/auth/login", data);
+};
+
+export const meUser = () => {
+  return axiosInstance.get(API_BASE_URL + "/users/me");
 };
 
 export const putUser = (data) => {
-  return api.put(API_BASE_URL + "/users/" + data.uid, data);
+  return axiosInstance.put(API_BASE_URL + "/users/" + data.uid, data);
 };

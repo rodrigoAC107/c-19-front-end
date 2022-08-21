@@ -1,7 +1,5 @@
 <template>
     <LayoutVertical>
-        <h1>Profile</h1>
-
         <div class="flex flex-row my-2 justify-center content-center">
             <form @submit.prevent="putUser" class="text-center w-1/2 p-4 space-y-4 bg-white rounded-xl" autocomplete="off">
                 <div>
