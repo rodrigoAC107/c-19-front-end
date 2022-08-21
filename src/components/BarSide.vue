@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { onMounted } from 'vue';
 import { TemplateIcon, BeakerIcon, ChartSquareBarIcon } from '@heroicons/vue/outline'
 import { useRouter } from 'vue-router';
 import useAuth from '../composables/useAuth';
@@ -32,17 +33,20 @@ export default {
         BeakerIcon,
         ChartSquareBarIcon
     },
-    async setup() {
+    setup() {
 
       const router = useRouter();
       const { getUser, clearLocalStorage } = useAuth();
+
+      onMounted(async () => {
+        try {
+          await getUser();
+        } catch (error) {
+          clearLocalStorage();
+          router.push({ name: "login" });
+        }
+      });
       
-      try {
-        await getUser();
-      } catch (error) {
-        clearLocalStorage();
-        router.push({ name: "login" });
-      }
     },
 }
 </script>

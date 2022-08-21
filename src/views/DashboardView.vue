@@ -1,6 +1,5 @@
 <template>
   <LayoutVertical>
-    <h1>Dashboard</h1>
     <div class="flex flex-row space-x-2 my-2 justify-around">
       <div
         class="bg-white border-1 border-solid h-44 w-46 rounded-lg shadow-xl shadow-gray-400 hover:bg-gradient-to-r from-cyan-400 to-blue-400 cursor-pointer"

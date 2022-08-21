@@ -1,6 +1,5 @@
 <template>
   <LayoutVertical>
-    <h1>Laboratory</h1>
     <div class="flex w-full min-h-full justify-center content-center mb-3">
       <div class="flex justify-start space-x-2 pl-14 w-2/12">
         <p class="mt-1">Mostrar: </p>
