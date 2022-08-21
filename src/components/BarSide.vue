@@ -24,14 +24,25 @@
 
 <script>
 import { TemplateIcon, BeakerIcon, ChartSquareBarIcon } from '@heroicons/vue/outline'
+import { useRouter } from 'vue-router';
+import useAuth from '../composables/useAuth';
 export default {
     components: {
         TemplateIcon, 
         BeakerIcon,
         ChartSquareBarIcon
     },
-    setup() {
-        
+    async setup() {
+
+      const router = useRouter();
+      const { getUser, clearLocalStorage } = useAuth();
+      
+      try {
+        await getUser();
+      } catch (error) {
+        clearLocalStorage();
+        router.push({ name: "login" });
+      }
     },
 }
 </script>

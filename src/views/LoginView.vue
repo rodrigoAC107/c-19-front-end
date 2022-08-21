@@ -58,7 +58,6 @@
 <script>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { meUser } from "../services/UserServices";
 import useAuth from "../composables/useAuth";
 
 export default {
