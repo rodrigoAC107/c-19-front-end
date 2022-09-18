@@ -43,6 +43,7 @@ import { useStore } from "vuex";
 import { computed } from "vue";
 import useAuth from "../composables/useAuth";
 import { useRouter } from "vue-router";
+import { showConfirmation } from "../utils/Alerts";
 export default {
   components: { BellIcon, UserCircleIcon, LogoutIcon, MenuIcon },
   setup() {
@@ -62,9 +63,12 @@ export default {
       // methods
       changeSidebar: () =>
         store.dispatch("sidebar/toggleSidebar", !sidebarToggle.value),
-      logOut: () => {
-        clearLocalStorage();
-        router.push({ name: "login" });
+      logOut: async () => {
+        const response = await showConfirmation({ title: '¿Desea salir?', confirmButtonText: 'Salir' });
+        if (response.isConfirmed) {
+          clearLocalStorage();
+          router.push({ name: "login" });
+        }
       },
 
       // computed

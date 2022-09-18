@@ -1,21 +1,28 @@
 <template>
     <LayoutVertical>
         <div class="flex flex-row my-2 justify-center content-center">
-            <form @submit.prevent="putUser" class="text-center w-1/2 p-4 space-y-4 bg-white rounded-xl" autocomplete="off">
+            <form @submit.prevent="putUser(user)" class="text-center w-1/2 p-4 space-y-4 bg-white rounded-xl"
+                autocomplete="off">
                 <div>
-                    <input v-model="user.name" type="text" autocomplete="off" placeholder="Name" class="border border-gray-300 rounded-md px-2 outline-gray-300 w-1/2">
+                    <input v-model="user.name" type="text" autocomplete="off" placeholder="Name"
+                        class="border border-gray-300 rounded-md px-2 outline-gray-300 w-1/2">
                 </div>
                 <div>
-                    <input v-model="user.email" type="email" autocomplete="off" placeholder="Email" class="border border-gray-300 rounded-md px-2 outline-gray-300 w-1/2">
+                    <input v-model="user.email" type="email" autocomplete="off" placeholder="Email"
+                        class="border border-gray-300 rounded-md px-2 outline-gray-300 w-1/2">
                 </div>
                 <div>
-                    <input v-model="user.password" type="password" autocomplete="off" placeholder="Password" class="border border-gray-300 rounded-md px-2 outline-gray-300 w-1/2">
+                    <input v-model="user.password" type="password" autocomplete="off" placeholder="Password"
+                        class="border border-gray-300 rounded-md px-2 outline-gray-300 w-1/2">
                 </div>
                 <div>
-                    <input v-model="user.confirmPassword" type="password" autocomplete="off" placeholder="Confirm Password" class="border border-gray-300 rounded-md px-2 outline-gray-300 w-1/2">
+                    <input v-model="user.confirmPassword" type="password" autocomplete="off"
+                        placeholder="Confirm Password"
+                        class="border border-gray-300 rounded-md px-2 outline-gray-300 w-1/2">
                 </div>
                 <div>
-                    <button type="submit" class="bg-blue-400 text-white p-2 w-1/2 rounded-lg hover:bg-blue-600">Submit</button>
+                    <button type="submit"
+                        class="bg-blue-400 text-white p-2 w-1/2 rounded-lg hover:bg-blue-600">Submit</button>
                 </div>
             </form>
         </div>
@@ -25,13 +32,15 @@
 <script>
 import { ref } from "vue";
 import useAuth from '../composables/useAuth';
+import useUser from '../composables/useUser';
 import LayoutVertical from '../layout/LayoutVertical.vue'
 export default {
     components: {
         LayoutVertical
     },
     setup() {
-        const { getUser, editUser, setLocalStorage } = useAuth();
+        const { getUser } = useAuth();
+        const { putUser } = useUser();
         const user = ref([]);
 
         const fetchUser = async () => {
@@ -43,19 +52,10 @@ export default {
         return {
             user,
             // Methods
-            putUser: async () => {
-                let editData = {
-                    'uid':      user.value.uid,
-                    'name':     user.value.name,
-                    'email':    user.value.email,
-                    'password': user.value.password
-                };
-                const { data } = await editUser(editData);
-                user.value.password = '';
-                setLocalStorage('user', data);
-            }
+            putUser
+            
         }
-        
+
     },
 }
 </script>

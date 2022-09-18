@@ -13,6 +13,7 @@
     "axios": "^0.26.1",
     "esbuild-linux-64": "^0.14.34",
     "moment": "^2.29.3",
+    "sweetalert2": "^11.4.33",
     "vue": "^3.2.31",
     "vue-router": "^4.0.12",
     "vuex": "^4.0.2"

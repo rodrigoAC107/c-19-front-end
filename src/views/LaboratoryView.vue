@@ -92,9 +92,14 @@
                 Validated
               </th>
               <th
-                class="text-sky-800 hover:text-white hover:cursor-pointer p-2 rounded-tr-lg"
+                class="text-sky-800 hover:text-white hover:cursor-pointer p-2"
               >
                 Resulted
+              </th>
+              <th
+                class="text-sky-800 hover:text-white hover:cursor-pointer p-2 rounded-tr-lg"
+              >
+                Actions
               </th>
             </tr>
           </thead>
@@ -116,6 +121,7 @@
                 {{ data.resulted }} <br />
                 <small>{{ data.resulted_type }}</small>
               </td>
+              <td class="flex justify-center p-1 pt-2"><img class="h-5 w-5" :src="Eye" alt="icon-eye"></td>
             </tr>
           </tbody>
         </table>
@@ -134,6 +140,8 @@ import Modal from "../components/Modal.vue";
 import Pagination from "../components/Pagination.vue"
 import LayoutVertical from "../layout/LayoutVertical.vue";
 import useLaboratories from "../composables/useLaboratory";
+import Eye from "../utils/Icons/Eye.svg";
+
 export default {
   components: {
     FilterIcon,
@@ -194,8 +202,11 @@ export default {
       search,
       isLoading,
 
-      //methods
-      changeShow
+      //Methods
+      changeShow,
+
+      //Icons
+      Eye
     }
   },
 };

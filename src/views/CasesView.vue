@@ -93,9 +93,14 @@
                 Age
               </th>
               <th
-                class="text-sky-800 hover:text-white hover:cursor-pointer p-2 rounded-tr-lg"
+                class="text-sky-800 hover:text-white hover:cursor-pointer p-2"
               >
                 Triage
+              </th>
+              <th
+                class="text-sky-800 hover:text-white hover:cursor-pointer p-2 rounded-tr-lg"
+              >
+                Actions
               </th>
             </tr>
           </thead>
@@ -103,7 +108,7 @@
             <tr
               v-for="data in casesData"
               :key="data._id"
-              class="h-12 hover:bg-sky-100 hover:cursor-pointer"
+              class="h-11 hover:bg-sky-100 hover:cursor-pointer"
             >
               <td class="p-1">{{ data._id }}</td>
               <td class="p-1">{{ data.name }}</td>
@@ -111,6 +116,7 @@
               <td class="p-1">{{ data.current_state }}</td>
               <td class="p-1">{{ data.age }} años</td>
               <td class="p-1">{{ data.triage }}</td>
+              <td class="flex justify-center p-1 pt-2"><img class="h-5 w-5" :src="Eye" alt="icon-eye"></td>
             </tr>
           </tbody>
         </table>
@@ -129,6 +135,7 @@ import { SearchIcon } from "@heroicons/vue/outline";
 import Modal from "../components/Modal.vue";
 import LayoutVertical from "../layout/LayoutVertical.vue";
 import useCases from "../composables/useCases";
+import Eye from "../utils/Icons/Eye.svg";
 export default {
   components: {
     Modal,
@@ -181,8 +188,11 @@ export default {
       search,
       isLoading,
 
-      //methods
+      //Methods
       changeShow,
+
+      //Icons
+      Eye
     };
   },
 };
