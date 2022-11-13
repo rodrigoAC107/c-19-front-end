@@ -11,3 +11,10 @@ export const getLaboratories = (show = 10, search = null, page = 1) => {
 
   return axiosInstance.get(url);
 };
+
+
+export const getLaboratory = ({ laboratoryId = null }) => {
+  let url = API_BASE_URL + `/laboratories/${laboratoryId}`;
+
+  return axiosInstance.get(url);
+};

@@ -11,3 +11,10 @@ export const getCases = (show = 10, search = null, page = 1) => {
 
   return axiosInstance.get(url);
 };
+
+export const getCase = ({caseId = null}) => {
+  let url = API_BASE_URL + `/cases/${caseId}`;
+
+
+  return axiosInstance.get(url);
+};

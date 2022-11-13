@@ -1,9 +1,111 @@
+<script>
+import { ref } from "vue";
+import { FilterIcon, SearchIcon } from "@heroicons/vue/outline";
+import ModalForm from "../components/ModalForm.vue";
+import Pagination from "../components/Pagination.vue";
+import LayoutVertical from "../layout/LayoutVertical.vue";
+import useLaboratories from "../composables/useLaboratory";
+import Eye from "../utils/Icons/Eye.svg";
+import ModalDetails from "../components/ModalDetails.vue";
+
+export default {
+  components: {
+    FilterIcon,
+    SearchIcon,
+    ModalForm,
+    LayoutVertical,
+    Pagination,
+    ModalDetails,
+  },
+  setup() {
+    const { getLaboratoriesAll, laboratoryFormatTime } = useLaboratories();
+    const laboratoriesData = ref([]);
+    const totalData = ref(0);
+    const show = ref(10);
+    const pageData = ref(1);
+    const countPageData = ref(1);
+    const search = ref(null);
+    const isLoading = ref(true);
+    const showModalDetails = ref(false);
+    const laboratoryId = ref(null);
+
+    const loadData = async () => {
+      isLoading.value = true;
+      const { data } = await getLaboratoriesAll({});
+      const { laboratories, total, page, count_pages } = data;
+
+      laboratoriesData.value = laboratories.map((laboratory) => {
+        return laboratoryFormatTime(laboratory);
+      });
+      totalData.value = total;
+      pageData.value = page;
+      countPageData.value = count_pages;
+      isLoading.value = false;
+    };
+
+    const changeShow = async (e) => {
+      isLoading.value = true;
+      let newPage = typeof e === "object" ? 1 : e;
+      const { data } = await getLaboratoriesAll({
+        show: show.value,
+        search: search.value,
+        page: newPage,
+      });
+      const { laboratories, total, page, count_pages } = data;
+
+      laboratoriesData.value = laboratories.map((laboratory) => {
+        return laboratoryFormatTime(laboratory);
+      });
+      totalData.value = total;
+      pageData.value = page;
+      countPageData.value = count_pages;
+      isLoading.value = false;
+    };
+
+    const handleCloseParent = (valueModal) => {
+      showModalDetails.value = valueModal;
+    };
+
+    const showModalLaboratory = (id) => {
+      showModalDetails.value = true;
+      laboratoryId.value = id;
+    };
+
+    loadData();
+
+    return {
+      laboratoriesData,
+      totalData,
+      pageData,
+      countPageData,
+      show,
+      search,
+      isLoading,
+      showModalDetails,
+      laboratoryId,
+
+      // Methods
+      changeShow,
+      handleCloseParent,
+      showModalLaboratory,
+
+      // Icons
+      Eye,
+    };
+  },
+};
+</script>
+
 <template>
   <LayoutVertical>
     <div class="flex w-full min-h-full justify-center content-center mb-3">
       <div class="flex justify-start space-x-2 pl-14 w-2/12">
-        <p class="mt-1">Mostrar: </p>
-        <select v-model="show" @change="changeShow" class="bg-white border border-gray-200 outline-1 w-full outline-gray-100 rounded-lg p-1">
+        <p class="mt-1">Mostrar:</p>
+        <select
+          v-model="show"
+          @change="changeShow"
+          class="bg-white border border-gray-200 outline-1 w-full outline-gray-100 rounded-lg p-1"
+        >
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="50">50</option>
@@ -18,10 +120,18 @@
             v-model="search"
             @keydown.enter="changeShow"
           />
-          <SearchIcon class="h-5 w-5 absolute top-2 right-2"/>
+          <SearchIcon class="h-5 w-5 absolute top-2 right-2" />
+        </div>
+        <div v-if="showModalDetails">
+          <ModalDetails
+            :open="true"
+            @handleClose="handleCloseParent"
+            nameComponent="Laboratory"
+            :id="laboratoryId"
+          />
         </div>
         <!-- Modal Start -->
-        <Modal>
+        <ModalForm>
           <template v-slot:form>
             <div class="p-2">
               <h1>Filtro de búsqueda</h1>
@@ -52,7 +162,7 @@
               </div>
             </div>
           </template>
-        </Modal>
+        </ModalForm>
         <!-- Modal end -->
       </div>
     </div>
@@ -104,14 +214,21 @@
             </tr>
           </thead>
           <tbody class="divide-y-2 divide-gray-200">
-            <tr v-for="data in laboratoriesData" :key="data._id" class="h-12 hover:bg-sky-100 hover:cursor-pointer">
+            <tr
+              v-for="data in laboratoriesData"
+              :key="data._id"
+              class="h-12 hover:bg-sky-100 hover:cursor-pointer"
+            >
               <td>
                 {{ data.protocol }} <br />
                 <small>{{ data.protocol_type }}</small>
               </td>
               <td>
                 {{ data.person.name }} <br />
-                <small>{{ data.person.province }} - {{ data.person.location }}</small>
+                <small
+                  >{{ data.person.province }} -
+                  {{ data.person.location }}</small
+                >
               </td>
               <td>{{ data.taken }}</td>
               <td>{{ data.received }}</td>
@@ -121,93 +238,29 @@
                 {{ data.resulted }} <br />
                 <small>{{ data.resulted_type }}</small>
               </td>
-              <td class="flex justify-center p-1 pt-2"><img class="h-5 w-5" :src="Eye" alt="icon-eye"></td>
+              <td
+                @click="showModalLaboratory(data._id)"
+                class="flex justify-center p-1 pt-2"
+              >
+                <img class="h-5 w-5" :src="Eye" alt="icon-eye" />
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <div v-if="!isLoading" class="flex w-full min-h-full justify-center content-center mt-4">
-      <Pagination :countPage=countPageData :page=pageData :total=totalData :show=Number(show) @nextPage="changeShow" @prevPage="changeShow"/>
+    <div
+      v-if="!isLoading"
+      class="flex w-full min-h-full justify-center content-center mt-4"
+    >
+      <Pagination
+        :countPage="countPageData"
+        :page="pageData"
+        :total="totalData"
+        :show="Number(show)"
+        @nextPage="changeShow"
+        @prevPage="changeShow"
+      />
     </div>
   </LayoutVertical>
 </template>
-
-<script>
-import { ref } from "vue";
-import { FilterIcon, SearchIcon } from "@heroicons/vue/outline";
-import Modal from "../components/Modal.vue";
-import Pagination from "../components/Pagination.vue"
-import LayoutVertical from "../layout/LayoutVertical.vue";
-import useLaboratories from "../composables/useLaboratory";
-import Eye from "../utils/Icons/Eye.svg";
-
-export default {
-  components: {
-    FilterIcon,
-    SearchIcon,
-    Modal,
-    LayoutVertical,
-    Pagination
-  },
-  setup() {
-    const { getLaboratoriesAll, laboratoryFormatTime } = useLaboratories();
-    const laboratoriesData = ref([]);
-    const totalData = ref(0);
-    const show = ref(10);
-    const pageData = ref(1);
-    const countPageData = ref(1);
-    const search = ref(null);
-    const isLoading = ref(true);
-
-    const loadData = async () => {
-      isLoading.value = true;
-      const { data } = await getLaboratoriesAll({});
-      const { laboratories, total, page, count_pages } = data;
-
-      laboratoriesData.value = laboratories.map((laboratory) => {
-        return laboratoryFormatTime(laboratory);
-      });
-      totalData.value = total;
-      pageData.value = page;
-      countPageData.value = count_pages;
-      isLoading.value = false;
-    };
-
-
-    const changeShow = async (e) => {
-      isLoading.value = true;
-      let newPage = typeof e === 'object' ? 1 : e;
-      const { data } = await getLaboratoriesAll({show: show.value, search: search.value, page: newPage});
-      const { laboratories, total, page, count_pages } = data;
-
-
-      laboratoriesData.value = laboratories.map((laboratory) => {
-        return laboratoryFormatTime(laboratory);
-      });
-      totalData.value = total;
-      pageData.value = page;
-      countPageData.value = count_pages;
-      isLoading.value = false;
-    }
-
-    loadData();
-
-    return {
-      laboratoriesData,
-      totalData,
-      pageData,
-      countPageData,
-      show,
-      search,
-      isLoading,
-
-      //Methods
-      changeShow,
-
-      //Icons
-      Eye
-    }
-  },
-};
-</script>
