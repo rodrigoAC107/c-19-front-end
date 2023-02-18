@@ -26,8 +26,8 @@ export default {
     ExclamationIcon,
     FilterIcon,
     CasesDetails,
-    LaboratoriesDetails
-},
+    LaboratoriesDetails,
+  },
   setup(props, { emit }) {
     const { open: componentOpen, nameComponent, id: componentId } = props;
 
@@ -35,7 +35,7 @@ export default {
 
     const handleClose = (openValue) => {
       open.value = openValue;
-      emit('handleClose', openValue);
+      emit("handleClose", openValue);
     };
 
     return {
@@ -44,12 +44,11 @@ export default {
       componentId,
 
       // Methods
-      handleClose
+      handleClose,
     };
   },
 };
 </script>
-
 
 <template>
   <TransitionRoot as="template" :show="open">
@@ -94,8 +93,14 @@ export default {
           >
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <!-- <slot name="cases"></slot> -->
-              <CasesDetails v-if="nameComponent === 'Cases'" :case="componentId" />
-              <LaboratoriesDetails v-if="nameComponent === 'Laboratory'" :laboratory="componentId" />
+              <CasesDetails
+                v-if="nameComponent === 'Cases'"
+                :case="componentId"
+              />
+              <LaboratoriesDetails
+                v-if="nameComponent === 'Laboratory'"
+                :laboratory="componentId"
+              />
             </div>
             <div
               class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"

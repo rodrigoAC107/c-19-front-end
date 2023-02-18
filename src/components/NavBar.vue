@@ -1,9 +1,15 @@
 <template>
   <div class="p-2 flex flex-row justify-between text-gray-500">
     <div class="p-2">
-      <MenuIcon
+      <ArrowRightIcon
+        v-if="sidebarToggle"
         @click="changeSidebar"
-        class="h-8 w-8 text-gray-500 hover:cursor-pointer"
+        class="h-6 w-6 text-gray-500 hover:cursor-pointer"
+      />
+      <ArrowLeftIcon
+        v-else
+        @click="changeSidebar"
+        class="h-6 w-6 text-gray-500 hover:cursor-pointer"
       />
     </div>
     <div class="p-1 flex flex-row space-x-2">
@@ -32,27 +38,35 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, toRefs } from "vue";
 import {
   BellIcon,
   UserCircleIcon,
   LogoutIcon,
-  MenuIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
 } from "@heroicons/vue/outline";
 import { useStore } from "vuex";
 import { computed } from "vue";
 import useAuth from "../composables/useAuth";
 import { useRouter } from "vue-router";
 import { showConfirmation } from "../utils/Alerts";
+
 export default {
-  components: { BellIcon, UserCircleIcon, LogoutIcon, MenuIcon },
+  components: {
+    BellIcon,
+    UserCircleIcon,
+    LogoutIcon,
+    ArrowLeftIcon,
+    ArrowRightIcon,
+  },
   setup() {
     const store = useStore();
     const { clearLocalStorage, getLocalStorage } = useAuth();
     const router = useRouter();
-    const name = ref('');
+    const name = ref("");
 
-    name.value = getLocalStorage('user').name;
+    name.value = getLocalStorage("user").name;
 
     const sidebarToggle = computed(
       () => store.getters["sidebar/getSidebarToggle"]
@@ -64,7 +78,10 @@ export default {
       changeSidebar: () =>
         store.dispatch("sidebar/toggleSidebar", !sidebarToggle.value),
       logOut: async () => {
-        const response = await showConfirmation({ title: '¿Desea salir?', confirmButtonText: 'Salir' });
+        const response = await showConfirmation({
+          title: "¿Desea salir?",
+          confirmButtonText: "Salir",
+        });
         if (response.isConfirmed) {
           clearLocalStorage();
           router.push({ name: "login" });
